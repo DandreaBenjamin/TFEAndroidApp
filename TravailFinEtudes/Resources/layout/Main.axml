@@ -1,7 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@android:color/darker_gray"
+    android:alpha="1">
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1"
+        android:alpha="1"
+        android:background="@android:drawable/toast_frame"
+        android:backgroundTint="#ffa0a0a0">
+        <TextView
+            android:text="Informations de connexion"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/textView1" />
+        <EditText
+            android:text="@string/DefaultIpAdress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/editTextIp"
+            android:background="@android:drawable/title_bar"
+            android:enabled="false" />
+        <EditText
+            android:text="@string/DefaultConnexionPort"
+            android:inputType="numberSigned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/editTextPort"
+            android:background="@android:drawable/progress_horizontal"
+            android:enabled="false" />
+        <CheckBox
+            android:layout_marginTop="25dp"
+            android:text="Connexion par defaut"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/checkBoxParam"
+            android:checked="true" />
+    </LinearLayout>
+    <AbsoluteLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/absoluteLayout1"
+        android:background="@android:drawable/toast_frame"
+        android:alpha="1"
+        android:backgroundTint="#ffa0a0a0">
+        <Button
+            android:text="START"
+            android:layout_width="500dp"
+            android:layout_height="180dp"
+            android:id="@+id/buttonStart"
+            android:enabled="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:background="@android:drawable/toast_frame"
+            android:layout_x="100dp"
+            android:layout_y="260dp"
+            android:alpha="1"
+            android:backgroundTint="#ffababab" />
+        <Button
+            android:text="LISTE"
+            android:layout_width="500dp"
+            android:layout_height="180dp"
+            android:id="@+id/buttonList"
+            android:background="@android:drawable/toast_frame"
+            android:layout_x="100dp"
+            android:layout_y="50dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:alpha="1"
+            android:backgroundTint="#ffababab"
+            android:shadowColor="#ff8fbc8b"
+            android:shadowDx="5"
+            android:shadowDy="5"
+            android:shadowRadius="15"
+            android:textColor="@android:color/holo_blue_dark" />
+    </AbsoluteLayout>
 </LinearLayout>

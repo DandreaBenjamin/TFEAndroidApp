@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="Commande mode"
+            android:id="@+id/selectedMode"
+            android:layout_width="match_parent"
+            android:layout_height="40px"
+            android:layout_marginTop="10px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <Button
+            android:text="Filtrer"
+            android:id="@+id/ButtonFilter"
+            android:layout_width="match_parent"
+            android:layout_height="40px"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="10px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <NumberPicker
+            android:id="@+id/averagePicker"
+            android:layout_width="match_parent"
+            android:layout_height="40px"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="10px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px" />
+        <Button
+            android:text="Scanner"
+            android:id="@+id/buttonScan"
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_marginTop="11px"
+            android:layout_marginBottom="11px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px" />
+        <Button
+            android:text="Enregistrer"
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_marginTop="11px"
+            android:layout_marginBottom="11px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px" />
+        <Button
+            android:text="Effacer"
+            android:id="@+id/buttonDelete"
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_marginTop="11px"
+            android:layout_marginBottom="11px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px" />
+        <Button
+            android:text="Pilote"
+            android:id="@+id/buttonPilot"
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_marginTop="13px"
+            android:layout_marginBottom="13px"
+            android:layout_marginRight="13px"
+            android:layout_marginLeft="13px" />
+    </LinearLayout>
+    <TravailFinEtudes.Views.ScreenDrawer
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/screenDrawer" />
+</LinearLayout>

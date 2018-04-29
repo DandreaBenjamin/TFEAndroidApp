@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">TravailFinEtudes</string>
+
+  <string name="DefaultIpAdress">192.168.240.1</string>
+
+  <string name="DefaultConnexionPort">5678</string>
+
+  <string name="DeconnectionError">Erreur lors de la deconnection</string>
+
+  <string name="ConnectFailed">La connection a malheureusement échoué!</string>
+
+  <string name="Deconnected">Vous êtes déconnecté!</string>
+  
+  <string name="Connect">Vous êtes maintenant connecté!</string>
+
+  <string name="AlreadyConnected">Vous êtes déjà connecté!</string>
+
+  <string name="CanvasError">Canvas introuvable!</string>
+
+  <string name="AdressError">Adresse ip fournie invalide!</string>
+
+  <string name="ImageSaved">Image enregistrée!</string>
+
+  <string name="ImageDirectory">/storage/emulated/0/Android/data/TfeNewVersion.TfeNewVersion/files/Images</string>
+
+  <string name="JSONObjectsDirectory">/storage/emulated/0/Android/data/TravailFinEtudes.TravailFinEtudes/files/</string>
+
+  <string name="ImageSupprimée">Image correctement supprimée!</string>
+
+  <string name="ErrorDeletingImage">Impossible de supprimer ce fichier!</string>
+
+  <string name="ErrorImageDirectory">Impossible de créer le dossier "imageDirectory"</string>
 </resources>
