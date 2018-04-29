@@ -21,6 +21,7 @@ namespace TravailFinEtudes.Utils
         public static float[] ProcessCoordinates(int[] distances, int interval)
         {
             int beginAngle = (int)((interval / 2) - 0.5);
+
             if (interval != 0)
             {
                 int[] newDistances = SmoothedAverage(distances, interval);

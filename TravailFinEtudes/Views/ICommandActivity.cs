@@ -27,5 +27,7 @@ namespace TravailFinEtudes.Views
         void LoadCommandMode();
         void ShowSavingDialog();
         void SetAverageSelection(string[] intervalSelection);
+        void FilterOn();
+        void FilterOff();
     }
 }

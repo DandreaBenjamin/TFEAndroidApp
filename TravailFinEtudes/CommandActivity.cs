@@ -71,14 +71,15 @@ namespace TravailFinEtudes
 
             fileName = new EditText(this);
             
-            InitAlert();
-            
+            InitAlert();       
         }
+
         private void SetComponentsActions()
         {
             filter.Click += delegate
             {
                 commandPresenter.OnFilterClick();
+                Log.Debug("CommandActivity : "  ,"filter.CLick()");
             };
 
             scan.Click += delegate

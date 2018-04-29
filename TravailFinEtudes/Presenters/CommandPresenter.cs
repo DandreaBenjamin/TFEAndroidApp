@@ -56,7 +56,6 @@ namespace TravailFinEtudes.Presenters
             this.screenDrawer = screenDrawer;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             SetAverageSelection();
-            //SetMode(mode);
         }
 
 
@@ -69,7 +68,7 @@ namespace TravailFinEtudes.Presenters
 
         public void OnDestroy()
         {
-           // Disconnect();
+           Disconnect();
         }
 
         public void OnPause()
@@ -186,28 +185,36 @@ namespace TravailFinEtudes.Presenters
             else
             {
                 commandActivity.LoadCommandMode();
-                // TryConnect(this.ip, this.port);
+                Console.WriteLine("SetMode " + mode  );
+                TryConnect(this.ip, this.port);
             }
         }
 
         public void Scan()
         {
-            /*
+            
             byte[] response = new byte[360];
             try
             {
+                
                 socket.Send(scan);
                 socket.Receive(response);
-                loadedObstacle = new Obstacle(response);
+                Console.WriteLine(response);
+                int[] rawDistances = MathUtil.AddDistances(response);
+                Console.WriteLine(rawDistances);
+                double[] stats = MathUtil.FindStatistics(rawDistances);
+                Console.WriteLine(rawDistances);
+                float[] rawCoordinates = rawCoordinates = MathUtil.FindCoordinates(rawDistances, 405, 444, 0);
+                loadedObstacle = new Obstacle(rawDistances, rawCoordinates, stats);
                 ObstacleLoaded = true;
                 LoadPathStats();
-                commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.RawCoordinates));
+                commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.rawCoordinates));
             }
             catch (SocketException sE)
             {
 
-            }*/
-            byte[] response = new byte[360];
+            }
+           /* byte[] response = new byte[360];
             response = TestScan();
             int[] rawDistances = MathUtil.AddDistances(response);
             double[] stats = MathUtil.FindStatistics(rawDistances);
@@ -215,7 +222,7 @@ namespace TravailFinEtudes.Presenters
             loadedObstacle = new Obstacle(rawDistances, rawCoordinates, stats);
             ObstacleLoaded = true;
             LoadPathStats();
-            commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.rawCoordinates));
+            commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.rawCoordinates));*/
         }
 
         public byte[] TestScan()
@@ -425,12 +432,11 @@ namespace TravailFinEtudes.Presenters
 
         public void OnAveragePickerScroll(int average)
         {
-                MapAveragePickerToIntegerValue(average);
-                float[] newCoordinates = MathUtil.ProcessNewCoordinates(loadedObstacle.rawDistances, selectedInterval);
-                screenDrawer.LoadPath(MathUtil.GetPathFromObstacleCoordinates(newCoordinates));
-                Console.WriteLine("OnAveragePickerScroll : " + average);
-                Console.WriteLine("OnAveragePickerScroll : " + newCoordinates);
-            
+              MapAveragePickerToIntegerValue(average);
+              float[] newCoordinates = MathUtil.ProcessNewCoordinates(loadedObstacle.rawDistances, selectedInterval);
+              screenDrawer.LoadPath(MathUtil.GetPathFromObstacleCoordinates(newCoordinates));
+              Console.WriteLine("OnAveragePickerScroll : " + average);
+              Console.WriteLine("OnAveragePickerScroll : " + newCoordinates);
         }
 
         public void OnFilterChecked()
@@ -447,12 +453,19 @@ namespace TravailFinEtudes.Presenters
 
         public void OnFilterClick()
         {
+            Log.Debug("OnFilterClick() : ", isFilterChecked.ToString());
             isFilterChecked = !isFilterChecked;
+            Log.Debug("OnFilterClick() : ", isFilterChecked.ToString());
 
             if (isFilterChecked)
             {
-
-
+                Log.Debug("OnFilterClick() : ", isFilterChecked.ToString());
+                float[] newCoordinates = MathUtil.ProcessNewCoordinates(loadedObstacle.rawDistances, selectedInterval);
+                screenDrawer.LoadPath(MathUtil.GetPathFromObstacleCoordinates(newCoordinates));
+            }
+            else
+            {
+                Log.Debug("OnFilterClick() : ", "Pas filtré");
             }
         }
     }
