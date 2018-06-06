@@ -22,7 +22,6 @@ namespace TravailFinEtudes.Utils
                 InitPaints();
             }
 
-
             private static void InitPaints()
             {
                 Paint framePaint = new Paint();

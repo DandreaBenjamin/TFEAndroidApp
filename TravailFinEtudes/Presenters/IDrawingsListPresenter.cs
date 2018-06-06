@@ -12,15 +12,12 @@ using Android.Widget;
 
 namespace TravailFinEtudes.Presenters
 {
-    interface IObstacleListPresenter
+    interface IDrawingsListPresenter
     {
-        void LoadSelectedObstacle();
-        void Load();
         void GetObstacleNamesArray();
         void OnCreate();
         void OnResume();
         void OnDestroy();
         void OnPause();
-        void OnRestart();
     }
 }

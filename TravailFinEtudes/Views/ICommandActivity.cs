@@ -16,11 +16,7 @@ namespace TravailFinEtudes.Views
     interface ICommandActivity
     {
         void ShowConnexionStatus(int status);
-        void SaveFile();
         void Scan();
-        void DeletePath();
-        void DeleteObstacle();
-        void SetFilter(int selectedFilter);
         void LoadPath(Path path);
         void LoadPathStats(double[] pathStats);
         void LoadReviewMode();

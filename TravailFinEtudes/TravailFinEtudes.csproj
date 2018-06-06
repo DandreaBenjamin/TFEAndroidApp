@@ -65,21 +65,21 @@
   <ItemGroup>
     <Compile Include="CommandActivity.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Model\Obstacle.cs" />
-    <Compile Include="ObstacleListActivity.cs" />
+    <Compile Include="Model\Drawing.cs" />
+    <Compile Include="DrawingsListActivity.cs" />
     <Compile Include="Presenters\CommandPresenter.cs" />
     <Compile Include="Presenters\ICommandPresenter.cs" />
     <Compile Include="Presenters\IMainPresenter.cs" />
-    <Compile Include="Presenters\IObstacleListPresenter.cs" />
+    <Compile Include="Presenters\IDrawingsListPresenter.cs" />
     <Compile Include="Presenters\MainPresenter.cs" />
-    <Compile Include="Presenters\ObstacleListPresenter.cs" />
+    <Compile Include="Presenters\DrawingsListPresenter.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\MathUtil.cs" />
     <Compile Include="Utils\PaintManager.cs" />
     <Compile Include="Views\ICommandActivity.cs" />
     <Compile Include="Views\IMainActivity.cs" />
-    <Compile Include="Views\IObstacleListeActivity.cs" />
+    <Compile Include="Views\IDrawingListActivity.cs" />
     <Compile Include="Views\IScreenDrawer.cs" />
     <Compile Include="Views\ScreenDrawer.cs" />
     <Compile Include="Views\ScreenDescriptor.cs" />

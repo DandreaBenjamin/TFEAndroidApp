@@ -31,14 +31,14 @@ namespace TravailFinEtudes.Presenters
         void LoadPathStats();
         void LoadObstaclePath();
         void DeletePath();
-        Boolean DeleteObstacle(string fileName);
+        Boolean DeleteObstacle();
         void Scan();
         void SetConnexionDetails(string ip, string port);
         void Move(String direction);
         void SaveFile(string fileName);
         Boolean IsAppConnected();
         void MapAveragePickerToIntegerValue(int value);
-     
+        void SetFirstUpdate(long timestamp);
         void SetAverageSelection();
         void SetMode(string mode);
         void SetFile(string filePath);

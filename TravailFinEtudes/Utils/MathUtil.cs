@@ -17,7 +17,6 @@ namespace TravailFinEtudes.Utils
 {
     static class MathUtil
     {
-
         public static float[] ProcessCoordinates(int[] distances, int interval)
         {
             int beginAngle = (int)((interval / 2) - 0.5);
@@ -55,14 +54,14 @@ namespace TravailFinEtudes.Utils
             return coordinates;
         }
 
-        public static float[] FindCoordinates(int[] distances, float X, float Y, int angle)
+        public static void FindCoordinates(int[] distances, float X, float Y, int angle, out float[] coordinates)
         {
             //Le nouveau tableau est deux fois plus grand car chaque distances va être décomposée
             //en coordonnée X et Y
 
             int sizeCoordinatesArray = distances.Length * 2;
 
-            float[] coordinates = new float[sizeCoordinatesArray];
+            coordinates = new float[sizeCoordinatesArray];
 
             int index = 0;
 
@@ -74,7 +73,6 @@ namespace TravailFinEtudes.Utils
                 index++;
                 angle++;
             }
-            return coordinates;
         }
 
 
@@ -89,11 +87,13 @@ namespace TravailFinEtudes.Utils
             return pathObstacle;
         }
 
-
-        public static int[] AddDistances(byte[] distances)
+        /*Tableau de 360 distances initiales + tableau par référence pour contenir
+          les distances additionnées
+        */
+        public static void AddDistances(byte[] distances, out int[] realDistancesArray)
         {
             int length = distances.Length / 2;
-            int[] realDistancesArray = new int[length];
+            realDistancesArray = new int[length];
             int realArrayPos = 0;
             for (int k = 0; k < distances.Length; k += 2)
             {
@@ -101,7 +101,6 @@ namespace TravailFinEtudes.Utils
                 realDistancesArray[realArrayPos] = (sum <= 400) ? sum : 400;
                 realArrayPos++;
             }
-            return realDistancesArray;
         } 
 
         public static int[] SmoothedAverage(int[] rawDistances, int interval)
@@ -142,5 +141,13 @@ namespace TravailFinEtudes.Utils
         }
  
         public static double[] FindStatistics(int[] realDistances) => new double[] { realDistances.Min(), realDistances.Max(), realDistances.Average() };
+
+        public static void FindStats(int[] realDistances, out double[] stats)
+        {
+            stats = new double[3];
+            stats[0] = realDistances.Min();
+            stats[1] = realDistances.Max();
+            stats[2] = realDistances.Average();
+        }
     }
 }

@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace TravailFinEtudes.Views
 {
-    interface IObstacleListeActivity
+    interface IDrawingListActivity
     {
         void SetObjectNameToDisplay(string[] objectsToDisplay);
     }

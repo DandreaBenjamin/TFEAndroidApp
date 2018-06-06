@@ -45,10 +45,12 @@ namespace TravailFinEtudes
             SetContentView(Resource.Layout.Command);
             screenDrawer = (ScreenDrawer)FindViewById(Resource.Id.screenDrawer);
             string mode = Intent.GetStringExtra("Mode");
+            Console.WriteLine("CommandActivity setting mode:" + mode);
             SetComponents();
             commandPresenter = new CommandPresenter(this, screenDrawer, mode);
             commandPresenter.SetMode(mode);
             SetComponentsActions();
+            FilterOff();
             Log.Debug("CommandActivity", "Mode :" + mode);           
         }
 
@@ -68,7 +70,6 @@ namespace TravailFinEtudes
             averagePicker = (NumberPicker)FindViewById(Resource.Id.averagePicker);
             useMode = (TextView)FindViewById(Resource.Id.selectedMode);
             filter = (Button)FindViewById(Resource.Id.ButtonFilter);
-
             fileName = new EditText(this);
             
             InitAlert();       
@@ -101,6 +102,7 @@ namespace TravailFinEtudes
             {
                 if (e.Event.Action == MotionEventActions.Down)
                 {
+                    commandPresenter.SetFirstUpdate(e.Event.EventTime);
                     sensorManager.RegisterListener(this, accelerometer, SensorDelay.Normal);
                 }
                 else if (e.Event.Action == MotionEventActions.Up)
@@ -115,19 +117,11 @@ namespace TravailFinEtudes
             };
         }
 
-        public void SaveFile()
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public void Scan()
         {
             commandPresenter.Scan();
-        }
-
-        public void SetFilter(int selectedFilter)
-        {
-            throw new NotImplementedException();
         }
 
         public void InitAlert()
@@ -183,15 +177,6 @@ namespace TravailFinEtudes
             accelerometer = sensorManager.GetDefaultSensor(SensorType.Accelerometer);
         }
 
-        public void DeletePath()
-        {
-            screenDrawer.DeletePath();
-        }
-
-        public void DeleteObstacle()
-        {
-            screenDrawer.DeletePath();
-        }
 
         public void ShowSavingDialog()
         {
@@ -218,12 +203,45 @@ namespace TravailFinEtudes
 
         public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void OnSensorChanged(SensorEvent e)
         {
             commandPresenter.OnSensorChanged(e.Values[0], e.Values[1],e.Timestamp);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void FilterOn()
+        {
+            averagePicker.Enabled = true;
+            filter.SetBackgroundColor(Color.Aquamarine);
+        }
+
+        public void FilterOff()
+        {
+            averagePicker.Enabled = false;
+            filter.SetBackgroundColor(Color.Crimson);
         }
     }
 }

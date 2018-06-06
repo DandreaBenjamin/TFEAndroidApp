@@ -9,18 +9,15 @@ namespace TravailFinEtudes.Presenters
 {
     class MainPresenter : IMainPresenter
     {
-        IMainActivity mainActivity;
-        string baseDirectory;
+        private IMainActivity mainActivity;
+        private string baseDirectory;
+        private readonly int[] connexionMessagesCodes = { 0, 2130903046, 2130903044, 2130903047, 2130903045, 2130903043 };
 
         public MainPresenter(IMainActivity mainActivity)
         {
             baseDirectory = Android.App.Application.Context.GetString(Resource.String.JSONObjectsDirectory);
             this.mainActivity = mainActivity;
-
-            if (CreateJsonDirectoryIfNotExists())
-            {
-
-            }
+            CreateJsonDirectoryIfNotExists();
         }
 
         public bool CheckIpAdressFormat(string ip)
@@ -49,7 +46,7 @@ namespace TravailFinEtudes.Presenters
             throw new NotImplementedException();
         }
 
-     
+
 
         public bool CreateJsonDirectoryIfNotExists()
         {

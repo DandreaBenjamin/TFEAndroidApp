@@ -31,7 +31,7 @@ namespace TravailFinEtudes.Presenters
         private ICommandActivity commandActivity;
         private IScreenDrawer screenDrawer;
         private IEnumerable<String> files;
-        private Obstacle loadedObstacle = null;
+        private Drawing loadedObstacle = null;
         private string[] intervalSelection = { "3", "5", "7", "9", "11", "13" };
         private int selectedInterval;
         private Boolean ObstacleLoaded = false;
@@ -42,6 +42,7 @@ namespace TravailFinEtudes.Presenters
         private string openedFile = null;
         private Boolean firstUpdateDone = false;
         private Boolean isFilterChecked = false;
+        private long timeFirstUpdate = 0;
         private readonly byte[] forward = Encoding.UTF8.GetBytes("forward");
         private readonly byte[] backward = Encoding.UTF8.GetBytes("backward");
         private readonly byte[] right = Encoding.UTF8.GetBytes("right");
@@ -89,36 +90,29 @@ namespace TravailFinEtudes.Presenters
                JsonSerializer serializer = new JsonSerializer();
                serializer.Serialize(streamWriter, loadedObstacle);
             }
-            Console.WriteLine(File.ReadAllText(filePath));
         }
 
         public void MapAveragePickerToIntegerValue(int value)
         {
             selectedInterval = int.Parse(intervalSelection[value]);
-            Console.WriteLine("selectedInterval          " + selectedInterval);
         }
-
-       
 
         public void DeletePath()
         {
             loadedObstacle = null;
             ObstacleLoaded = false;
-            /*
-             * set ObstacleLoaded = 0
-             * */
-            commandActivity.DeletePath();
+            screenDrawer.DeletePath();
         }
 
-        public Boolean DeleteObstacle(string filePath)
+        public Boolean DeleteObstacle()
         { 
                 try
                 {
-                    File.Delete(filePath);
-                    if (!File.Exists(filePath))
+                    File.Delete(this.openedFile);
+                    if (!File.Exists(this.openedFile))
                     {
-                        ObstacleLoaded = false;
-                        return true;
+                         ObstacleLoaded = false;
+                         return true;
                     }
                     else
                         return false;
@@ -150,30 +144,22 @@ namespace TravailFinEtudes.Presenters
             commandActivity.LoadPathStats(loadedObstacle.stats);
         }
 
-
-        public void LoadObstaclePath(String fileName)
-        {
-            var filePath = System.IO.Path.Combine(baseDirectory, fileName);
-            loadedObstacle = JsonConvert.DeserializeObject<Obstacle>(File.ReadAllText(filePath));
-            ObstacleLoaded = true;
-        }
-
         public void LoadObstaclePath()
         {
             var filePath = System.IO.Path.Combine(baseDirectory, openedFile);
             Console.WriteLine(File.ReadAllText(filePath));
-            loadedObstacle = JsonConvert.DeserializeObject<Obstacle>(File.ReadAllText(filePath));
+            loadedObstacle = JsonConvert.DeserializeObject<Drawing>(File.ReadAllText(filePath));
             ObstacleLoaded = true;
         }
 
         public void SetMode(string mode)
         {
+            this.mode = mode;
             if (mode == "Review")
             {
                 commandActivity.LoadReviewMode();
                 if (openedFile != null)
                 {
-                    Console.WriteLine("openedFile = " + openedFile);
                     LoadObstaclePath();
                     if (loadedObstacle != null)
                     {
@@ -185,27 +171,27 @@ namespace TravailFinEtudes.Presenters
             else
             {
                 commandActivity.LoadCommandMode();
-                Console.WriteLine("SetMode " + mode  );
+             /*
+              * 
+              * 
                 TryConnect(this.ip, this.port);
+             */
             }
         }
 
         public void Scan()
-        {
-            
+        {       
             byte[] response = new byte[360];
             try
             {
-                
                 socket.Send(scan);
                 socket.Receive(response);
                 Console.WriteLine(response);
-                int[] rawDistances = MathUtil.AddDistances(response);
-                Console.WriteLine(rawDistances);
-                double[] stats = MathUtil.FindStatistics(rawDistances);
-                Console.WriteLine(rawDistances);
-                float[] rawCoordinates = rawCoordinates = MathUtil.FindCoordinates(rawDistances, 405, 444, 0);
-                loadedObstacle = new Obstacle(rawDistances, rawCoordinates, stats);
+                int[] distances; double[] stats; float[] rawCoordinates;
+                MathUtil.AddDistances(response, out distances);
+                MathUtil.FindStats(distances, out stats);
+                MathUtil.FindCoordinates(distances, 405, 444, 0, out rawCoordinates);
+                loadedObstacle = new Drawing(distances, rawCoordinates, stats);
                 ObstacleLoaded = true;
                 LoadPathStats();
                 commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.rawCoordinates));
@@ -213,27 +199,7 @@ namespace TravailFinEtudes.Presenters
             catch (SocketException sE)
             {
 
-            }
-           /* byte[] response = new byte[360];
-            response = TestScan();
-            int[] rawDistances = MathUtil.AddDistances(response);
-            double[] stats = MathUtil.FindStatistics(rawDistances);
-            float[] rawCoordinates = rawCoordinates = MathUtil.FindCoordinates(rawDistances, 405, 444, 0);
-            loadedObstacle = new Obstacle(rawDistances, rawCoordinates, stats);
-            ObstacleLoaded = true;
-            LoadPathStats();
-            commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.rawCoordinates));*/
-        }
-
-        public byte[] TestScan()
-        {
-            byte[] response = new byte[360];
-            Random rnd = new Random();
-            for (int x = 0; x < 359; x++)
-            {
-                response[x] = (byte)rnd.Next(10,199);
-            }
-            return response;
+            }        
         }
 
         public void Move(String direction)
@@ -267,24 +233,16 @@ namespace TravailFinEtudes.Presenters
             if (!socket.Connected)
             {
                 IPAddress[] adresses = Dns.GetHostAddresses(ip);
-                Log.Debug("MainPresenter", "L'adresse est :" + ip);
-                Log.Debug("MainPresenter", "Le port est :" + port);
-
                 try
                 {
                     socket.Connect(adresses, port);
                     if (socket.Connected)
                     {
-                        Log.Debug("MainPresenter", "Le socket est connecté");
                         return connexionMessagesCodes[1];
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("MainPresenter error", e.Message);
-                    Log.Debug("MainPresenter error", e.Source);
-                    Log.Debug("MainPresenter error", e.StackTrace);
-                    Log.Debug("MainPresenter", "Il y a eu une erreur quelqe part");
                     return connexionMessagesCodes[2];
                 }
             }
@@ -295,7 +253,6 @@ namespace TravailFinEtudes.Presenters
         {
             IPAddress ipAddr;
             return IPAddress.TryParse(ip, out ipAddr);
-                
         }
 
         public int TryConnect(string ip, string port)
@@ -338,16 +295,6 @@ namespace TravailFinEtudes.Presenters
             Scan();
         }
 
-        public Boolean OnDeleteDrawClicked(string filePath)
-        {
-            if (mode == "Review")
-            {
-                DeleteObstacle(this.openedFile);
-            }
-            DeletePath();
-            return true;
-        }
-
         public void OnSaveFileClicked()
         {
             commandActivity.ShowSavingDialog();
@@ -362,7 +309,7 @@ namespace TravailFinEtudes.Presenters
         public void OnDriveReleased()
         {
             
-
+            
 
         }
 
@@ -375,11 +322,17 @@ namespace TravailFinEtudes.Presenters
         {
             if (mode == "Review" && openedFile != null)
             {
-                DeleteObstacle(this.openedFile);
+                DeleteObstacle();
                 this.openedFile = null;
             }
             DeletePath();
             return true;
+        }
+
+        public void SetFirstUpdate(long timestamp)
+        {
+            firstUpdateDone = true;
+            this.timeFirstUpdate = timestamp;
         }
 
         public void OnSensorChanged(float X, float Y,long timestamp)
@@ -404,15 +357,15 @@ namespace TravailFinEtudes.Presenters
         public void UpdateDirection(float X, float Y)
         {
             if (X <= -2)
-                SendCommand(forward);
+                Console.WriteLine(forward.ToString());
             else if (X >= 2)
-                SendCommand(backward);
+                Console.WriteLine(backward.ToString());
             else if (Y <= -2)
-                SendCommand(left);
+                Console.WriteLine(left.ToString());
             else if (Y >= 2)
-                SendCommand(right);
+                Console.WriteLine(right.ToString());
             else
-                SendCommand(stay);
+                Console.WriteLine(stay.ToString());
         }
 
         public void SendCommand(byte[] data)
@@ -421,51 +374,38 @@ namespace TravailFinEtudes.Presenters
             {
                 socket.Send(data);
             }
-            catch (Exception e) { }
+            catch (Exception e) { };
         }
 
 
         public void Stop()
         {
-            SendCommand(stay);
+            Console.WriteLine(stay.ToString());
+            // SendCommand(stay);
         }
 
         public void OnAveragePickerScroll(int average)
         {
-              MapAveragePickerToIntegerValue(average);
-              float[] newCoordinates = MathUtil.ProcessNewCoordinates(loadedObstacle.rawDistances, selectedInterval);
-              screenDrawer.LoadPath(MathUtil.GetPathFromObstacleCoordinates(newCoordinates));
-              Console.WriteLine("OnAveragePickerScroll : " + average);
-              Console.WriteLine("OnAveragePickerScroll : " + newCoordinates);
-        }
-
-        public void OnFilterChecked()
-        {
-            this.isFilterChecked = true;
-            Console.WriteLine("OnFilterChecked " + "Filter is checked");
-        }
-
-        public void OnfilterUnChecked()
-        {
-            this.isFilterChecked = false;
-            Console.WriteLine("OnFilterChecked " + "Filter is not checked");
+            if (isFilterChecked)
+            {
+                MapAveragePickerToIntegerValue(average);
+                float[] newCoordinates = MathUtil.ProcessNewCoordinates(loadedObstacle.rawDistances, selectedInterval);
+                screenDrawer.LoadPath(MathUtil.GetPathFromObstacleCoordinates(newCoordinates));
+            }
         }
 
         public void OnFilterClick()
         {
-            Log.Debug("OnFilterClick() : ", isFilterChecked.ToString());
             isFilterChecked = !isFilterChecked;
-            Log.Debug("OnFilterClick() : ", isFilterChecked.ToString());
 
-            if (isFilterChecked)
+            if (isFilterChecked && loadedObstacle != null)
             {
-                Log.Debug("OnFilterClick() : ", isFilterChecked.ToString());
-                float[] newCoordinates = MathUtil.ProcessNewCoordinates(loadedObstacle.rawDistances, selectedInterval);
-                screenDrawer.LoadPath(MathUtil.GetPathFromObstacleCoordinates(newCoordinates));
+                commandActivity.FilterOn();
             }
-            else
+            else if(!isFilterChecked && loadedObstacle != null)
             {
-                Log.Debug("OnFilterClick() : ", "Pas filtré");
+                commandActivity.FilterOff();
+                commandActivity.LoadPath(MathUtil.GetPathFromObstacleCoordinates(loadedObstacle.rawCoordinates));
             }
         }
     }

@@ -15,11 +15,11 @@ using Newtonsoft.Json;
 
 namespace TravailFinEtudes
 {
-    [Activity(Label = "ObstacleListActivity")]
-    public class ObstacleListActivity : ListActivity, IObstacleListeActivity
+    [Activity(Label = "Liste des tracés enregistrés")]
+    public class ObstacleListActivity : ListActivity, IDrawingListActivity
     {
-        ObstacleListPresenter obstaclleListPresenter;
-        Intent toCommandActivity;
+        private DrawingsListPresenter drawingsListPresenter;
+        private Intent toCommandActivity;
         private TextView selectedTextView;
         private string[] objectsToDisplay;
         private string selectedObjectPath;
@@ -32,19 +32,21 @@ namespace TravailFinEtudes
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your application here
-            obstaclleListPresenter = new ObstacleListPresenter(this);
-            obstaclleListPresenter.OnCreate();
+            drawingsListPresenter = new DrawingsListPresenter(this);
+            drawingsListPresenter.OnCreate();
             ListAdapter = new ArrayAdapter<String>(this, Resource.Layout.ObstacleList, objectsToDisplay);
             toCommandActivity = new Intent(this, typeof(CommandActivity));
         }
 
-
         protected override void OnRestart()
         {
-            base.OnRestart();
-            obstaclleListPresenter.OnRestart();
+            base.OnRestart();       
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            drawingsListPresenter.OnResume();
         }
 
         protected override void OnListItemClick(ListView l, View v, int position, long id)

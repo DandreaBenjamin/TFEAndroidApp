@@ -14,7 +14,7 @@
         android:id="@+id/linearLayout1"
         android:alpha="1"
         android:background="@android:drawable/toast_frame"
-        android:backgroundTint="#ffa0a0a0">
+        android:backgroundTint="#ff8b0000">
         <TextView
             android:text="Informations de connexion"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -68,7 +68,7 @@
         android:id="@+id/absoluteLayout1"
         android:background="@android:drawable/toast_frame"
         android:alpha="1"
-        android:backgroundTint="#ffa0a0a0">
+        android:backgroundTint="#ffdc143c">
         <Button
             android:text="START"
             android:layout_width="500dp"
@@ -78,9 +78,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:background="@android:drawable/toast_frame"
             android:layout_x="100dp"
-            android:layout_y="260dp"
+            android:layout_y="230dp"
             android:alpha="1"
-            android:backgroundTint="#ffababab" />
+            android:backgroundTint="#ffababab"
+            android:textColor="@android:color/holo_blue_dark" />
         <Button
             android:text="LISTE"
             android:layout_width="500dp"
@@ -88,7 +89,7 @@
             android:id="@+id/buttonList"
             android:background="@android:drawable/toast_frame"
             android:layout_x="100dp"
-            android:layout_y="50dp"
+            android:layout_y="20dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:alpha="1"
             android:backgroundTint="#ffababab"

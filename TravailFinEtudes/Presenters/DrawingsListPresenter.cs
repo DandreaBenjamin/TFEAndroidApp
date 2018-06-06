@@ -14,15 +14,15 @@ using System.IO;
 
 namespace TravailFinEtudes.Presenters
 {
-    class ObstacleListPresenter : IObstacleListPresenter
+    class DrawingsListPresenter : IDrawingsListPresenter
     {
-        private IObstacleListeActivity iObstacleListeActivity;
+        private IDrawingListActivity iDrawingsListActivity;
         private IEnumerable<String> listObstacle;
         private String pathDirectory;
         
-        public ObstacleListPresenter(IObstacleListeActivity iObstacleListeActivity)
+        public DrawingsListPresenter(IDrawingListActivity iDrawingsListActivity)
         {
-            this.iObstacleListeActivity = iObstacleListeActivity;
+            this.iDrawingsListActivity = iDrawingsListActivity;
             this.pathDirectory = Android.App.Application.Context.GetString(Resource.String.JSONObjectsDirectory);
         }
 
@@ -44,15 +44,11 @@ namespace TravailFinEtudes.Presenters
         
         public void OnResume()
         {
-            //listObstacle = Directory.EnumerateFiles(pathDirectory);
-        }
-
-        public void OnRestart()
-        {
             listObstacle = Directory.EnumerateFiles(pathDirectory);
             GetObstacleNamesArray();
         }
 
+     
         public void GetObstacleNamesArray()
         {
             String[] arrayAdapter = listObstacle.ToArray();
@@ -66,18 +62,9 @@ namespace TravailFinEtudes.Presenters
                 arrayAdapter[position] = arrayAdapter[position].Remove(0, nbrToRemove);
                 position++;
             }
-            iObstacleListeActivity.SetObjectNameToDisplay(arrayAdapter);
+            iDrawingsListActivity.SetObjectNameToDisplay(arrayAdapter);
         }
 
 
-        public void LoadSelectedObstacle()
-        {
-            
-        }
-
-        public void Load()
-        {
-            
-        }
     }
 }
